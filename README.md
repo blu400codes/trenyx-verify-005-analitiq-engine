@@ -19,3 +19,6 @@ Corrections to the frozen plan live in [ERRATA.md](ERRATA.md) (E1: authorship fi
 
 Status: PRE-REGISTERED. Baseline, blind tests, planted-defect matrix, and findings follow
 as separate, ordered commits. Repo is PRIVATE until the publish-gate clears it.
+
+---
+*Method, other audits, and the live calibration record: [trenyx.io/audits](https://trenyx.io/audits.html)*
