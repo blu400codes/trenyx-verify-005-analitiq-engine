@@ -1,0 +1,8 @@
+# ANCHORS — independent timestamps proving the attack plan predates code review.
+# Rule (runbook Entry #5.1): >=2 independent clocks, >=1 DURABLE (undeletable, unbackdatable).
+plan: 00-preregistration/ATTACK-PLAN.md
+plan_sha256: 2602aea8015bad80b31f4557f264e49730a2b24e0ddfdd869aa94d0cd4f54a48
+target_pin: analitiq-ai/analitiq-engine@1eac312d733b6db7f3e60fd47bae67016d74985e
+stamped_utc: 2026-09-02T18:47:16Z
+anchor: opentimestamps 00-preregistration/ATTACK-PLAN.md.ots (Bitcoin; verify: ots verify 00-preregistration/ATTACK-PLAN.md.ots)
+# second anchor (GitHub Issue #1 server timestamp) appended after the private repo is created
