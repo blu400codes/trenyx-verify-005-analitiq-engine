@@ -15,5 +15,7 @@ Verify end to end: `shasum -a 256 00-preregistration/ATTACK-PLAN.md` must equal
 A contamination boundary (a narrow inadvertent exposure during the authorship check) is
 disclosed in §0 of the plan — on purpose, inside the anchored document.
 
+Corrections to the frozen plan live in [ERRATA.md](ERRATA.md) (E1: authorship figure; E2: two flag omissions) — found by the pre-publish buyer's check.
+
 Status: PRE-REGISTERED. Baseline, blind tests, planted-defect matrix, and findings follow
 as separate, ordered commits. Repo is PRIVATE until the publish-gate clears it.

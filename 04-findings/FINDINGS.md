@@ -20,7 +20,7 @@ The suite fences **components** exhaustively and misses **wiring and guard edges
 ## What the suite is genuinely excellent at (measured, not asserted)
 All 14 hot-path plants caught: failed-batch-advances-checkpoint, no-ack-reported-success,
 lost-DLQ-record-reported-stored (+ phantom count, + inverted review filter), key-order-dependent
-dedup digest, unsafe lossy casts, Decimal→float narrowing (cursor bind AND forensic record),
+dedup digest, unsafe lossy casts, Decimal→float narrowing (cursor bind AND forensic record — both HINT-EXPOSED plants per plan §0/ERRATA E2; the catches credit the suite, not the auditor),
 tz-drop on the cursor, malformed-tag passthrough, manifest-less archive, not-ready-sink write.
 
 ## Recommendation (one line)

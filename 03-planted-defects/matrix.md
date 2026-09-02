@@ -8,7 +8,7 @@ Each plant applied one at a time to the real code, target's OWN suite re-run
 |----|-----------|----------------|------|--------|
 | P1 | T2 | failed batch WITH a committed_cursor now advances the checkpoint (`not success` → `False`) | `src/grpc/client.py` | **CAUGHT** (1 failed / 2597 passed) |
 | P2 | T3 | a permanently-lost DLQ record reports as stored (`return False` → `return True`) | `src/state/dead_letter_queue.py:161` | **CAUGHT** (1 / 442) |
-| P3 | T4 | lossy narrowing/overflow silently truncates (`safe=True` → `safe=False`) | `src/engine/mapping.py:1210` | **CAUGHT** (1 / 706) |
+| P3 | T4* | lossy narrowing/overflow silently truncates (`safe=True` → `safe=False`) [HINT-EXPOSED — §0/E2] | `src/engine/mapping.py:1210` | **CAUGHT** (1 / 706) |
 | P4 | T4 | cursor datetime loses tz (aware→naive) across the resume round-trip | `src/state/store.py:168` | **CAUGHT** (1 / 2841) |
 | P5 | T1* | equal cursor value bypasses tie-breaker selection (`> 0` → `>= 0`) | `src/grpc/cursor.py:147` | **CAUGHT** (1 / 3157) |
 | P6 | T3 | phantom record: DLQ count incremented even when the write failed | `src/state/dead_letter_queue.py:369` | **CAUGHT** (1 / 443) |
@@ -43,7 +43,7 @@ published as EXEMPLARY, to match the rigor of the earlier public audits.
 | P14 | T6 | endpoint ref with no endpoint_id accepted (engine reads None.json) | **ESCAPED** |
 | P15 | T1* | datetime-string cursors compared lexically [HINT-EXPOSED] | **ESCAPED** |
 | P16 | T4 | DLQ forensic record narrows Decimal to float | **CAUGHT** |
-| P17 | T4 | Decimal cursor flattened to float (precision lost in resume bind) | **CAUGHT** |
+| P17 | T4* | Decimal cursor flattened to float (precision lost in resume bind) [HINT-EXPOSED — §0/E2] | **CAUGHT** |
 | P18 | T6 | handshake without ack budget accepted (statements unbounded; the issue #234 guard) | **ESCAPED** |
 | P19 | T3 | DLQ review filter inverted (your failed records hidden) | **CAUGHT** |
 | P20 | T5 | not-ready sink no longer rejects | **CAUGHT** |

@@ -1,7 +1,8 @@
 # verify-005 — PRELIMINARY verdict (NOT yet published; refuter + buyer's check pending)
 
-**Target:** analitiq-ai/analitiq-engine @ 1eac312d · AI-built data sync engine (27/30 recent
-commits Claude Opus 5-trailered).
+**Target:** analitiq-ai/analitiq-engine @ 1eac312d · AI-built data sync engine (mixed Claude
+Opus-5/Fable-5 authorship: 25/30 recent commits carry a Claude trailer — see ERRATA E1;
+the anchored plan's "27/30 Opus 5" figure was wrong).
 
 **Preliminary (updated after the 20-plant matrix): STRONG — shipped code correct; suite strong at
 the core with six mapped test gaps.** Between ledgerly (EXEMPLARY, 14/16) and kontext (7/11): the
