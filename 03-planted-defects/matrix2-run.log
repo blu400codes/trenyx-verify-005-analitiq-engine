@@ -1,0 +1,30 @@
+matrix2 start 15:37:45
+P7 T2   CAUGHT      69s :: a send that reached NO ack is reported successful -> batch silently dropped
+      last: ======= 1 failed, 2586 passed, 1 skipped, 1 warning in 67.02s (0:01:07) ========
+P8 T1*  ESCAPED     70s :: record MISSING the tie-breaker field wins the boundary [HINT-EXPOSED]
+      last: ============ 3627 passed, 5 skipped, 1 warning in 67.98s (0:01:07) =============
+P9 T4   CAUGHT      69s :: malformed tagged cursor passes through instead of failing to clean re-scan
+      last: ======= 1 failed, 3438 passed, 5 skipped, 1 warning in 67.67s (0:01:07) ========
+P10 T5   CAUGHT      33s :: row digest depends on key order -> keyless dedup misses -> duplicates on replay
+      last: RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+P11 T2   ESCAPED     70s :: truncate_insert resumes from persisted cursor (issue #307 regression: truncated table gets only the slice)
+      last: ============ 3627 passed, 5 skipped, 1 warning in 68.28s (0:01:08) =============
+P12 T6   CAUGHT      69s :: archive without pipelines/manifest.json hydrates and runs
+      last: ======= 1 failed, 3328 passed, 5 skipped, 1 warning in 67.39s (0:01:07) ========
+P13 T3   ESCAPED     70s :: partial DLQ batch loss no longer logged critical (silent loss)
+      last: ============ 3627 passed, 5 skipped, 1 warning in 68.28s (0:01:08) =============
+P14 T6   ESCAPED     71s :: ref with no endpoint_id accepted -> engine reads None.json
+      last: ============ 3627 passed, 5 skipped, 1 warning in 68.80s (0:01:08) =============
+P15 T1*  ESCAPED     70s :: datetime-string cursors compared lexically (wrong max across tz offsets) [HINT-EXPOSED]
+      last: ============ 3627 passed, 5 skipped, 1 warning in 68.59s (0:01:08) =============
+P16 T4   CAUGHT      28s :: DLQ forensic record narrows Decimal to float (precision loss in the safety net)
+      last: ================== 1 failed, 445 passed, 1 skipped in 26.06s ===================
+P17 T4   CAUGHT      69s :: Decimal cursor flattened to float -> precision lost in the resume bind
+      last: ======= 1 failed, 2842 passed, 1 skipped, 1 warning in 67.40s (0:01:07) ========
+P18 T6   ESCAPED     70s :: handshake without ack budget accepted -> statements unbounded
+      last: ============ 3627 passed, 5 skipped, 1 warning in 68.46s (0:01:08) =============
+P19 T3   CAUGHT      28s :: DLQ review filter inverted: your pipeline's failed records hidden
+      last: ================== 1 failed, 433 passed, 1 skipped in 26.04s ===================
+P20 T5   CAUGHT      34s :: not-ready sink no longer rejects -> writes attempted against unready state
+      last: RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+matrix2 done 15:51:25 — caught=8 escaped=6 plant-errors=0

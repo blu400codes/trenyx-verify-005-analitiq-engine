@@ -3,7 +3,12 @@
 **Target:** analitiq-ai/analitiq-engine @ 1eac312d · AI-built data sync engine (27/30 recent
 commits Claude Opus 5-trailered).
 
-**Preliminary: EXEMPLARY (verify-003/ledgerly class).**
+**Preliminary (updated after the 20-plant matrix): STRONG — shipped code correct; suite strong at
+the core with six mapped test gaps.** Between ledgerly (EXEMPLARY, 14/16) and kontext (7/11): the
+combined kill count is **14/20 (70%)**, with every high-stakes data-path plant caught and every
+escape in a guard/comparison edge. The two most valuable escapes are regressions of the project's
+OWN fixed issues (#307, #234) shipping green — the "fix without a fence" class. Findings are
+recommendation-in-tests, ledgerly-style; no security or data-loss bug in shipped code.
 
 1. **Internally correct** — the three highest-stakes native invariants are sound: the incremental
    cursor is inclusive + tie-breakered (no boundary drop); the checkpoint is written only on a
