@@ -1,5 +1,5 @@
 # Disclosure draft — public GitHub issue on analitiq-ai/analitiq-engine
-**Status:** READY (reviews recorded below).
+**Status:** SENT 2026-09-02T20:07:41Z — filed as https://github.com/analitiq-ai/analitiq-engine/issues/489 (server createdAt above; public-first, benign).
 **Channel rationale:** benign test-gap recommendations, no security consequence → public-first
 justified (ledgerly precedent). No exploit content.
 
