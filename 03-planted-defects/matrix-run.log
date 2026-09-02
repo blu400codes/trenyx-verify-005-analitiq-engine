@@ -1,0 +1,14 @@
+matrix start 15:12:00
+P1 T2   CAUGHT      70s  matches=1  :: failed batch WITH cursor now advances checkpoint (data loss on resume)
+      last: ======= 1 failed, 2597 passed, 1 skipped, 1 warning in 68.26s (0:01:08) ========
+P2 T3   CAUGHT      28s  matches=1  :: permanently-lost DLQ record reported as stored
+      last: ================== 1 failed, 442 passed, 1 skipped in 26.38s ===================
+P3 T4   CAUGHT      34s  matches=2  :: lossy narrowing/overflow silently truncates instead of failing loud
+      last: ================== 1 failed, 706 passed, 1 skipped in 32.06s ===================
+P4 T4   CAUGHT      69s  matches=1  :: cursor datetime loses tz (aware->naive) across resume round-trip
+      last: ======= 1 failed, 2841 passed, 1 skipped, 1 warning in 67.66s (0:01:07) ========
+P5 T1*  CAUGHT      70s  matches=1  :: equal cursor value bypasses tie-breaker selection at the boundary [HINT-EXPOSED]
+      last: ======= 1 failed, 3157 passed, 1 skipped, 1 warning in 67.91s (0:01:07) ========
+P6 T3   CAUGHT      28s  matches=2  :: phantom record: _record_count incremented even when write failed
+      last: ================== 1 failed, 443 passed, 1 skipped in 26.15s ===================
+matrix done 15:17:00

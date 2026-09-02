@@ -1,0 +1,25 @@
+# verify-005 — PRELIMINARY verdict (NOT yet published; refuter + buyer's check pending)
+
+**Target:** analitiq-ai/analitiq-engine @ 1eac312d · AI-built data sync engine (27/30 recent
+commits Claude Opus 5-trailered).
+
+**Preliminary: EXEMPLARY (verify-003/ledgerly class).**
+
+1. **Internally correct** — the three highest-stakes native invariants are sound: the incremental
+   cursor is inclusive + tie-breakered (no boundary drop); the checkpoint is written only on a
+   destination-acked commit and a failed batch is *contractually forbidden* from advancing it
+   (`client.py`: "a failed batch must never advance the checkpoint"); the DLQ returns `False` and
+   logs `critical` on true loss, and its stubs raise rather than fake success. Type fidelity uses
+   `pc.cast(safe=True)` (fails loud on lossy narrowing) and tags Decimal/datetime for lossless
+   cursor round-trip.
+2. **Evidence supports the claims** — the "never lose data / only sync what changed / data arrives
+   correctly" README promises are backed by the code and by a 3632-test suite that caught **6/6**
+   planted defects, including the two highest-stakes ones.
+3. **No security or data-loss finding in the shipped code.** The one honest *seam* worth naming (not
+   a bug): the engine's default retry semantics is AT_LEAST_ONCE unless a handler declares otherwise —
+   documented, and consistent with "never lose data" (no loss; exactly-once is per-handler).
+
+**Before publication (owed):** (a) the fuller matrix pass (§ matrix.md honesty note); (b) an
+independent REFUTER on this verdict; (c) the pre-publish BUYER'S CHECK on the repo; (d) `ots upgrade`
+on the anchor; (e) since this is a clean bill, no private security disclosure is required — publish
+as a pre-registered blind EXEMPLARY (like ledgerly), optionally a friendly note to the maintainer.
