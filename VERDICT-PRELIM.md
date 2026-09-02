@@ -19,13 +19,13 @@ recommendation-in-tests, ledgerly-style; no security or data-loss bug in shipped
    `pc.cast(safe=True)` (fails loud on lossy narrowing) and tags Decimal/datetime for lossless
    cursor round-trip.
 2. **Evidence supports the claims** — the "never lose data / only sync what changed / data arrives
-   correctly" README promises are backed by the code and by a 3632-test suite that caught **6/6**
-   planted defects, including the two highest-stakes ones.
+   correctly" README promises are backed by the code and by a 3632-test suite that caught **14/20**
+   planted defects — every plant in the test-exercised data path, all escapes in guard/wiring edges.
 3. **No security or data-loss finding in the shipped code.** The one honest *seam* worth naming (not
    a bug): the engine's default retry semantics is AT_LEAST_ONCE unless a handler declares otherwise —
    documented, and consistent with "never lose data" (no loss; exactly-once is per-handler).
 
 **Before publication (owed):** (a) the fuller matrix pass (§ matrix.md honesty note); (b) an
 independent REFUTER on this verdict; (c) the pre-publish BUYER'S CHECK on the repo; (d) `ots upgrade`
-on the anchor; (e) since this is a clean bill, no private security disclosure is required — publish
-as a pre-registered blind EXEMPLARY (like ledgerly), optionally a friendly note to the maintainer.
+on the anchor; (e) benign findings (test gaps only), no private security disclosure required — publish
+as a pre-registered blind **STRONG** with the six-gap maintainer note (ledgerly-style channel).

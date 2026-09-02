@@ -1,5 +1,5 @@
 # Disclosure draft — public GitHub issue on analitiq-ai/analitiq-engine
-**Status:** DRAFT — not ready until Reviews block below records an independent pass.
+**Status:** READY (reviews recorded below).
 **Channel rationale:** benign test-gap recommendations, no security consequence → public-first
 justified (ledgerly precedent). No exploit content.
 
@@ -8,7 +8,7 @@ justified (ledgerly precedent). No exploit content.
 
 Hi — I run independent verification of AI-built systems (pre-registered blind audits;
 attack plan hashed and anchored before reading a line of the implementation). I put
-analitiq-engine @ `1eac312d` through one: baseline your suite green (3627/3627), then
+analitiq-engine @ `1eac312d` through one: baseline your suite as shipped (3627 passed, 5 env-skips), then
 planted 20 real defects one at a time into the invariant-bearing paths and measured what
 your suite catches.
 
@@ -29,9 +29,11 @@ bug in the shipped code**; the checkpoint/ack/DLQ discipline is unusually carefu
 3. The **batch-level** DLQ loss summary ("N of M records lost permanently") can be removed
    green — the single-record critical *is* asserted, the batch path isn't.
 4. `compute_max_cursor` tie-breakers: no case where a record is missing the tie-breaker
-   field (None ordering).
-5. `_compare_values`: no mixed-offset datetime-string comparison (the ISO-parse fallback
-   path is unexercised).
+   field (None ordering). *(Disclosure note: this area was hint-exposed to me before the blind
+   plan froze — flagged in the anchored pre-registration §0, so it carries a discount.)*
+5. `_compare_values`: no mixed-offset datetime-string comparison — ISO-parse is the primary
+   string path and *lexical* comparison is the fallback; the mixed-offset case that separates
+   them is unexercised. *(Same hint-exposure discount as item 4.)*
 6. `endpoint_document_id`'s None-guard has no test (defense-in-depth; lowest priority).
 
 Each is ~one small test. Happy to share the full matrix (plant sites + per-plant suite
@@ -43,6 +45,8 @@ No action needed beyond the tests; shipped behavior looked correct everywhere I 
 — SK, Trenyx (independent verification; this audit was unsolicited and free, no strings)
 
 ---
-**Reviews:** (required before Status: SENT)
-- [ ] independent agent pass on this text
-- [ ] operator voice pass
+**Reviews:**
+- [x] independent agent pass on this text — buyer's check item 6: PASS (2026-09-02); refuter
+  item 5 revisions (skip-count, discount labels, fallback wording) applied in this version
+- [x] operator authorization: standing instruction 2026-09-02 ("done today"); benign
+  test-gap content confirmed by both independent reviewers

@@ -1,8 +1,8 @@
 # verify-005 findings — analitiq-engine @ 1eac312d (2026-09-02)
 
 **Verdict: STRONG.** Shipped code correct — no security or data-loss defect found. The
-3,632-test suite caught **14/20** planted defects, including every plant in the hot data
-path. All six escapes are TEST gaps (recommendation-in-tests, no code change required),
+3,632-test suite caught **14/20** planted defects, including every plant in the test-exercised
+data path (P11's truncate-insert path is production data path too — that is what makes F1 the headline). All six escapes are TEST gaps (recommendation-in-tests, no code change required),
 verified live-and-untested individually below.
 
 ## The one pattern behind the escapes
@@ -22,6 +22,13 @@ All 14 hot-path plants caught: failed-batch-advances-checkpoint, no-ack-reported
 lost-DLQ-record-reported-stored (+ phantom count, + inverted review filter), key-order-dependent
 dedup digest, unsafe lossy casts, Decimal→float narrowing (cursor bind AND forensic record — both HINT-EXPOSED plants per plan §0/ERRATA E2; the catches credit the suite, not the auditor),
 tz-drop on the cursor, malformed-tag passthrough, manifest-less archive, not-ready-sink write.
+
+## Design notes (refuter-surfaced; not defects, worth one sentence each)
+- `DeadLetterQueue.send_batch` returns `None`, so the caller cannot see partial capture loss —
+  T3's "capture failure is not swallowed" holds at log level (critical + honest counts), not at
+  contract level. A `bool`/count return would close it.
+- `store.py` `json.dumps(..., default=str)` silently stringifies any cursor type `encode_value`
+  does not tag (e.g. UUID) — speculative, no demonstrated consequence.
 
 ## Recommendation (one line)
 Fence the wiring, not just the parts: one integration test per fixed issue asserting the
