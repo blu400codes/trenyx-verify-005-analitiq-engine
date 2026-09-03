@@ -5,17 +5,22 @@
 data path (P11's truncate-insert path is production data path too — that is what makes F1 the headline). All six escapes are TEST gaps (recommendation-in-tests, no code change required),
 verified live-and-untested individually below.
 
-## The one pattern behind the escapes
+## Severity note (2026-09-03)
+Severities re-graded ON MERITS after the maintainer's reproduction; the hint-exposure discount is
+recorded in its own `credit` column and no longer lowers a grade (it never should have). See
+MAINTAINER-RESPONSE.md for the two accepted corrections.
+
+## The one pattern behind the escapes (superseded: three shapes — see MAINTAINER-RESPONSE.md)
 The suite fences **components** exhaustively and misses **wiring and guard edges**:
 
-| # | escape | what exists | what's missing | sev |
-|---|--------|-------------|----------------|-----|
-| F1 | truncate_insert resumes from a persisted cursor (re-break of their fixed **issue #307**) | `TestFullRefreshCheckpoint.test_get_cursor_never_resumes` unit-tests the checkpoint **view** (mocked inner), citing #307 | nothing tests the **dispatch** (`stream_processor` selecting the view for truncate_insert) — remove the wiring, suite stays green | MEDIUM (test-gap on a known data-loss class) |
-| F2 | handshake without an ack budget accepted → statements unbounded (the **issue #234** guard) | the guard itself, well-commented | no test sends a nonconforming handshake (`ack_timeout_seconds` absent) | LOW-MED |
-| F3 | batch-level DLQ loss no longer logged critical | single-record "record lost permanently" critical IS asserted (`test_dead_letter_queue.py:481`) | the batch summary ("N of M records lost permanently") is not | LOW |
-| F4 | record missing the tie-breaker field wins the boundary | `test_compute_max_with_tie_breakers` (happy path) | no None-tie-breaker case | LOW *[HINT-EXPOSED — plan §0]* |
-| F5 | datetime-string cursors compared lexically | datetime encode/round-trip tests | no mixed-offset string comparison through `_compare_values` | LOW *[HINT-EXPOSED — plan §0]* |
-| F6 | endpoint ref with no endpoint_id accepted (`None.json`) | the defense-in-depth guard | no test names `endpoint_document_id` at all | INFO (contract validator derives the id upstream) |
+| # | escape | what exists | what's missing | sev (merits) | credit |
+|---|--------|-------------|----------------|-----|-----|
+| F1 | truncate_insert resumes from a persisted cursor (re-break of their fixed **issue #307**) | `TestFullRefreshCheckpoint.test_get_cursor_never_resumes` unit-tests the checkpoint **view** (mocked inner), citing #307 | nothing tests the **dispatch** (`stream_processor` selecting the view for truncate_insert) — remove the wiring, suite stays green | MEDIUM-HIGH: re-opens the #307 data loss silently | blind |
+| F2 | handshake without an ack budget accepted → statements unbounded (the **issue #234** guard) | the guard itself, well-commented | no test sends a nonconforming handshake (`ack_timeout_seconds` absent) | MEDIUM: instant cancellation of every statement on the async path (NOT "unbounded" — maintainer-corrected); third-party-sender scope | blind |
+| F3 | batch-level DLQ loss no longer logged critical | single-record "record lost permanently" critical IS asserted (`test_dead_letter_queue.py:481`) | the batch summary ("N of M records lost permanently") is not | LOW-MED: aggregate loss alert line silently removable | blind |
+| F4 | record missing the tie-breaker field wins the boundary | `test_compute_max_with_tie_breakers` (happy path) | no None-tie-breaker case | MEDIUM: reproduced hard TypeError on any nullable tie-breaker (maintainer-upgraded) | hint-exposed (plan §0) |
+| F5 | datetime-string cursors compared lexically | datetime encode/round-trip tests | no mixed-offset string comparison through `_compare_values` | MEDIUM-HIGH: silent persisted-watermark corruption, permanent record skips; '.000Z' vs 'Z' trigger (maintainer: strongest in set) | hint-exposed (plan §0) |
+| F6 | endpoint ref with no endpoint_id accepted (`None.json`) | the defense-in-depth guard | no test names `endpoint_document_id` at all | INFO: unreachable defensive branch (validator always populates) — delete-protection test only | blind |
 
 ## What the suite is genuinely excellent at (measured, not asserted)
 All 14 hot-path plants caught: failed-batch-advances-checkpoint, no-ack-reported-success,
