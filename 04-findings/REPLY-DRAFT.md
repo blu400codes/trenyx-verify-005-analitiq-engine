@@ -1,4 +1,8 @@
-# Reply draft — analitiq-engine#489 · Status: DRAFT (operator go required; same-day rule)
+# Reply draft — analitiq-engine#489 · Status: READY (independent review PASS 2026-09-03; operator go required)
+
+**Reviews:** independent agent pass (Sonnet, 2026-09-03 — flagship models 529-overloaded): technical claims vs the live comment PASS; corrections-as-our-error PASS; tone PASS; no over-share PASS. Two mechanical fixes applied: header stripped at post time; matrix.md pass-2 sites backfilled + runners committed so the retest offer is reproducible. Post body = everything below the rule.
+
+---
 
 Thank you — this is the most rigorous confirmation this shop has received, and the
 control-mutation table is the part I'll be stealing: positive controls that must fail are the

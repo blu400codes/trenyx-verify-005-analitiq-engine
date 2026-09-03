@@ -31,24 +31,26 @@ published as EXEMPLARY, to match the rigor of the earlier public audits.
 
 ## Matrix pass 2 (14 additional plants — operator-requested expansion)
 
-| id | inv | defect planted | result |
-|----|-----|----------------|--------|
-| P7 | T2 | send that reached NO ack reported successful (batch silently dropped) | **CAUGHT** |
-| P8 | T1* | record MISSING the tie-breaker field wins the boundary [HINT-EXPOSED] | **ESCAPED** |
-| P9 | T4 | malformed tagged cursor passes through instead of failing to clean re-scan | **CAUGHT** |
-| P10 | T5 | row digest key-order-dependent → keyless dedup misses → duplicates on replay | **CAUGHT** |
-| P11 | T2 | truncate_insert resumes from persisted cursor (**their own issue #307, replanted**) | **ESCAPED** |
-| P12 | T6 | archive without pipelines/manifest.json hydrates and runs | **CAUGHT** |
-| P13 | T3 | partial DLQ batch loss no longer logged critical | **ESCAPED** |
-| P14 | T6 | endpoint ref with no endpoint_id accepted (engine reads None.json) | **ESCAPED** |
-| P15 | T1* | datetime-string cursors compared lexically [HINT-EXPOSED] | **ESCAPED** |
-| P16 | T4 | DLQ forensic record narrows Decimal to float | **CAUGHT** |
-| P17 | T4* | Decimal cursor flattened to float (precision lost in resume bind) [HINT-EXPOSED — §0/E2] | **CAUGHT** |
-| P18 | T6 | handshake without ack budget accepted (statements unbounded; the issue #234 guard) | **ESCAPED** |
-| P19 | T3 | DLQ review filter inverted (your failed records hidden) | **CAUGHT** |
-| P20 | T5 | not-ready sink no longer rejects | **CAUGHT** |
+| id | inv | defect planted | site (file · exact anchor) | result |
+|----|-----|----------------|------|--------|
+| P7 | T2 | send that reached NO ack reported successful (batch silently dropped) | `src/grpc/client.py` · `return BatchResult(` | **CAUGHT** |
+| P8 | T1* | record MISSING the tie-breaker field wins the boundary [HINT-EXPOSED] | `src/grpc/cursor.py` · `if a_val is None:` | **ESCAPED** |
+| P9 | T4 | malformed tagged cursor passes through instead of failing to clean re-scan | `src/state/store.py` · `if not isinstance(raw, str):` | **CAUGHT** |
+| P10 | T5 | row digest key-order-dependent → keyless dedup misses → duplicates on replay | `cdk/cdk/record_identity.py` · `canonical = json.dumps(basis, sort_keys=True, default=str)` | **CAUGHT** |
+| P11 | T2 | truncate_insert resumes from persisted cursor (**their own issue #307, replanted**) | `src/engine/stream_processor.py` · `if self._is_truncate_insert():` | **ESCAPED** |
+| P12 | T6 | archive without pipelines/manifest.json hydrates and runs | `src/runtime_archive.py` · `REQUIRED_FILES = ("pipelines/manifest.json",)` | **CAUGHT** |
+| P13 | T3 | partial DLQ batch loss no longer logged critical | `src/state/dead_letter_queue.py` · `if written_count < len(batch):` | **ESCAPED** |
+| P14 | T6 | endpoint ref with no endpoint_id accepted (engine reads None.json) | `src/config/endpoint_resolver.py` · `if ref.endpoint_id is None:` | **ESCAPED** |
+| P15 | T1* | datetime-string cursors compared lexically [HINT-EXPOSED] | `src/grpc/cursor.py` · `if isinstance(a, str) and isinstance(b, str):` | **ESCAPED** |
+| P16 | T4 | DLQ forensic record narrows Decimal to float | `src/state/dead_letter_queue.py` · `if isinstance(obj, Decimal):` | **CAUGHT** |
+| P17 | T4* | Decimal cursor flattened to float (precision lost in resume bind) [HINT-EXPOSED — §0/E2] | `src/state/store.py` · `if isinstance(value, Decimal):` | **CAUGHT** |
+| P18 | T6 | handshake without ack budget accepted (statements unbounded; the issue #234 guard) | `src/destination/server.py` · `if not schema_msg.ack_timeout_seconds:` | **ESCAPED** |
+| P19 | T3 | DLQ review filter inverted (your failed records hidden) | `src/state/dead_letter_queue.py` · `and record.get("pipeline_id") != pipeline_id` | **CAUGHT** |
+| P20 | T5 | not-ready sink no longer rejects | `cdk/cdk/base_handler.py` · `reason = self.not_ready_reason(stream_id)  # skipcq: PYL-E` | **CAUGHT** |
 
 **Combined kill count: 14 / 20 (70%).** Zero plant errors; tree verified clean after each pass.
+
+**Exact mutations:** `run_matrix.py` / `run_matrix2.py` beside this file hold every plant's full `old`→`new` text (reconstructed 2026-09-03 from the session record after the working copies were lost with a session; edits identical to those run 2026-09-02). A retest re-applies the same edit against the fixed tree.
 
 ## The six escapes — what they actually say (pre-refuter read)
 
