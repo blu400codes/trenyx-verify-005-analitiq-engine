@@ -1,6 +1,11 @@
 # Reply — analitiq-engine#489 · Status: SENT 2026-09-03T16:44:37Z (operator go 2026-09-03) — https://github.com/analitiq-ai/analitiq-engine/issues/489#issuecomment-5529004907
 
-**Reviews:** independent agent pass (Sonnet, 2026-09-03 — flagship models 529-overloaded): technical claims vs the live comment PASS; corrections-as-our-error PASS; tone PASS; no over-share PASS. Two mechanical fixes applied: header stripped at post time; matrix.md pass-2 sites backfilled + runners committed so the retest offer is reproducible. Post body = everything below the rule.
+kind: followup
+new_claims: yes   # upgraded severities, adopted fault class, retest commitment → agent tier applied
+Reviews:
+  independent-agent: sonnet reply reviewer (2026-09-03) — PASS on accuracy/corrections/tone; two mechanical fixes applied
+
+**Reviews (prose):** independent agent pass (Sonnet, 2026-09-03 — flagship models 529-overloaded): technical claims vs the live comment PASS; corrections-as-our-error PASS; tone PASS; no over-share PASS. Two mechanical fixes applied: header stripped at post time; matrix.md pass-2 sites backfilled + runners committed so the retest offer is reproducible. Post body = everything below the rule.
 
 ---
 
